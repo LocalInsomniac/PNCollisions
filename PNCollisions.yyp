@@ -1,0 +1,57 @@
+{
+  "resources": [
+    {"id":{"name":"pnc_mesh_freeze","path":"scripts/pnc_mesh_freeze/pnc_mesh_freeze.yy",},"order":4,},
+    {"id":{"name":"__pnc_config","path":"scripts/__pnc_config/__pnc_config.yy",},"order":0,},
+    {"id":{"name":"__pnc_system","path":"scripts/__pnc_system/__pnc_system.yy",},"order":2,},
+    {"id":{"name":"objTest","path":"objects/objTest/objTest.yy",},"order":0,},
+    {"id":{"name":"pnc_raycast","path":"scripts/pnc_raycast/pnc_raycast.yy",},"order":0,},
+    {"id":{"name":"pnc_mesh_add_triangle","path":"scripts/pnc_mesh_add_triangle/pnc_mesh_add_triangle.yy",},"order":2,},
+    {"id":{"name":"pnc_mesh_add_triangles","path":"scripts/pnc_mesh_add_triangles/pnc_mesh_add_triangles.yy",},"order":3,},
+    {"id":{"name":"pnc_mesh_set_matrix","path":"scripts/pnc_mesh_set_matrix/pnc_mesh_set_matrix.yy",},"order":5,},
+    {"id":{"name":"pnc_mesh_create","path":"scripts/pnc_mesh_create/pnc_mesh_create.yy",},"order":0,},
+    {"id":{"name":"pnc_mesh_destroy","path":"scripts/pnc_mesh_destroy/pnc_mesh_destroy.yy",},"order":1,},
+    {"id":{"name":"load_vertex_buffer_and_pnc_mesh","path":"scripts/load_vertex_buffer_and_pnc_mesh/load_vertex_buffer_and_pnc_mesh.yy",},"order":0,},
+    {"id":{"name":"rmMain","path":"rooms/rmMain/rmMain.yy",},"order":0,},
+  ],
+  "Options": [
+    {"name":"Main","path":"options/main/options_main.yy",},
+    {"name":"Windows","path":"options/windows/options_windows.yy",},
+    {"name":"operagx","path":"options/operagx/options_operagx.yy",},
+  ],
+  "isDnDProject": false,
+  "isEcma": false,
+  "tutorialPath": "",
+  "configs": {
+    "name": "Default",
+    "children": [],
+  },
+  "RoomOrderNodes": [
+    {"roomId":{"name":"rmMain","path":"rooms/rmMain/rmMain.yy",},},
+  ],
+  "Folders": [
+    {"folderPath":"folders/Objects.yy","order":9,"resourceVersion":"1.0","name":"Objects","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Rooms.yy","order":10,"resourceVersion":"1.0","name":"Rooms","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/PNCollisions.yy","order":15,"resourceVersion":"1.0","name":"PNCollisions","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/PNCollisions/Meshes.yy","order":1,"resourceVersion":"1.0","name":"Meshes","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/PNCollisions/Collisions.yy","order":3,"resourceVersion":"1.0","name":"Collisions","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Test Scripts.yy","order":16,"resourceVersion":"1.0","name":"Test Scripts","tags":[],"resourceType":"GMFolder",},
+  ],
+  "AudioGroups": [
+    {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
+  ],
+  "TextureGroups": [
+    {"isScaled":true,"autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,"resourceVersion":"1.3","name":"Default","resourceType":"GMTextureGroup",},
+  ],
+  "IncludedFiles": [
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"mesh.smf","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"mesh2.smf","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"slab_of_doom.smf","resourceType":"GMIncludedFile",},
+  ],
+  "MetaData": {
+    "IDEVersion": "23.1.1.431",
+  },
+  "resourceVersion": "1.4",
+  "name": "PNCollisions",
+  "tags": [],
+  "resourceType": "GMProject",
+}
