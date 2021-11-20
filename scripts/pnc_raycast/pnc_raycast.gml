@@ -10,7 +10,8 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 	var nx
 	var ny
 	var nz
-	
+
+	var mesh_triangles = mesh[PNCMeshData.TRIANGLES]
 	var mesh_grid = mesh[PNCMeshData.GRID]
 	var apply_matrix = false
 	
@@ -41,7 +42,6 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 		/* Check for intersections against every single triangle.
 		   This can get resource-intensive, and is why pnc_mesh_freeze should be used
 		   for static meshes! */
-		var mesh_triangles = mesh[PNCMeshData.TRIANGLES]
 		var i = 0
 		
 		repeat array_length(mesh_triangles) {
@@ -190,7 +190,7 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 			var i = 0
 			
 			repeat array_length(region) {
-				var intersect = __pnc_line_overlaps_triangle([x1, y1, z1, x2, y2, z2], region[i++])
+				var intersect = __pnc_line_overlaps_triangle([x1, y1, z1, x2, y2, z2], mesh_triangles[region[i++]])
 
 				if intersect != false {
 					// There is an intersection, apply it for further iterations.

@@ -60,7 +60,7 @@ function pnc_mesh_freeze(mesh) {
 			var k = 0
 			
 			repeat triangles {
-				var triangle = mesh_triangles[k++]
+				var triangle = mesh_triangles[k]
 				
 				var tx1 = triangle[0]
 				var ty1 = triangle[1]
@@ -87,8 +87,10 @@ function pnc_mesh_freeze(mesh) {
 				   or __pnc_lines_intersect(tx3, ty3, tx1, ty1, rx2, ry2, rx1, ry2)
 				   or __pnc_lines_intersect(tx3, ty3, tx1, ty1, rx1, ry2, rx1, ry1)
 				{
-					array_push(region, triangle)
+					array_push(region, k)
 				}
+				
+				k++
 			}
 			
 			if array_length(region) {
