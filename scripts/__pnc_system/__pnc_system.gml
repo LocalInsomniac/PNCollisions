@@ -1,4 +1,4 @@
-#macro __PNC_VERSION "1.1.1"
+#macro __PNC_VERSION "1.1.2"
 #macro __PNC_DATE "2021-11-20"
 
 enum PNCMeshData {
@@ -93,7 +93,7 @@ function __pnc_line_overlaps_triangle(line, triangle) {
 
 	dot = dot_product_3d(tnx, tny, tnz, tx1 - x1, ty1 - y1, tz1 - z1) / dot
 
-	if dot <= 0 or dot >= 1 {
+	if dot < 0 or dot > 1 {
 		return false
 	}
 
@@ -113,7 +113,7 @@ function __pnc_line_overlaps_triangle(line, triangle) {
 	var by = ty2 - ty1
 	var bz = tz2 - tz1
 
-	if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) <= 0 {
+	if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
 		return false
 	}
 
@@ -128,7 +128,7 @@ function __pnc_line_overlaps_triangle(line, triangle) {
 	by = ty3 - ty2
 	bz = tz3 - tz2
 
-	if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) <= 0 {
+	if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
 		return false
 	}
 
@@ -139,7 +139,7 @@ function __pnc_line_overlaps_triangle(line, triangle) {
 	by = ty1 - ty3
 	bz = tz1 - tz3
 
-	if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) <= 0 {
+	if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
 		return false
 	}
 	
