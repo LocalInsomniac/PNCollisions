@@ -1,3 +1,6 @@
+#macro __PNC_VERSION "1.0.0"
+#macro __PNC_DATE "2021-11-20"
+
 enum PNCMeshData {
 	TRIANGLES,
 	REGIONS,
@@ -143,3 +146,6 @@ function __pnc_line_overlaps_triangle(line, triangle) {
 	
 	return [intersect_x, intersect_y, intersect_z, tnx, tny, tnz]
 }
+
+// Startup
+show_debug_message("PNCollisions " + __PNC_VERSION + " by Can't Sleep (" + __PNC_DATE + ")")
