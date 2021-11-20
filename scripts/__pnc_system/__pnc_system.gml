@@ -14,26 +14,25 @@ enum PNCMeshData {
 
 /// @desc Generate normals from a 3D triangle. Return an array ([nx, ny, nz]).
 function __pnc_triangle_normal(x1, y1, z1, x2, y2, z2, x3, y3, z3) {
-	var v1 = x2 - x1
-	var v2 = y2 - y1
-	var v3 = z2 - z1
-	var v4 = x3 - x1
-	var v5 = y3 - y1
-	var v6 = z3 - z1
+	// Get the position of B and C relative to A.
+	var bx = x2 - x1
+	var by = y2 - y1
+	var bz = z2 - z1
+	var cx = x3 - x1
+	var cy = y3 - y1
+	var cz = z3 - z1
 
-	var normals = [
-		v2 * v6 - v3 * v5,
-		v3 * v4 - v1 * v6,
-		v1 * v5 - v2 * v4,
-	]
-
-	var d = sqrt(sqr(normals[0]) + sqr(normals[1]) + sqr(normals[2]))
+    // Get the normal of the triangle by using the normalized cross product.
+	var cpx = by * cz - cy * bz
+	var cpy = bz * cx - cz * bx
+	var cpz = bx * cy - cx * by
+	var d = sqrt(sqr(cpx) + sqr(cpy) + sqr(cpz))
 	
-	normals[0] /= d
-	normals[1] /= d
-	normals[2] /= d
+	cpx /= d
+	cpy /= d
+	cpz /= d
 	
-	return normals
+	return [cpx, cpy, cpz]
 }
 
 /// @desc Check for an intersection between two 2D lines. Return a boolean.
