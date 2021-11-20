@@ -25,5 +25,13 @@ This library is currently barebones and only can be used to cast rays onto colli
 
 `pnc_mesh_freeze(mesh)` - Freezes a regular collision mesh, which makes it read-only. This means that you can no longer add triangles or apply matrices to it. A frozen collision mesh becomes subdivided into regions, which makes collisions faster. Returns `true` if successful, `false` if the mesh is already frozen or doesn't include any triangles.
 
+`pnc_mesh_save_buffer(mesh, buffer)` - Writes the contents of a collision mesh into a buffer.
+
+`pnc_mesh_save(mesh, filename)` - Writes the contents of a collision mesh into a file.
+
+`pnc_mesh_load_buffer(buffer)` - Reads the contents of a collision mesh from a buffer. Returns a new collision mesh if successful, `false` otherwise.
+
+`pnc_mesh_load(filename)` - Reads the contents of a collision mesh from a file. Returns a new collision mesh if successful, `false` otherwise.
+
 ## Collisions
 `pnc_raycast(mesh, x1, y1, z1, x2, y2, z2)` - Casts a ray onto the specified collision mesh from `[x1, y1, z1]` to `[x2, y2, z2]`. Returns an array `[x, y, z, nx, ny, nz]` if successful and there was an intersection, `false` otherwise.
