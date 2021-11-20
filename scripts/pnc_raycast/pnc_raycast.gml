@@ -61,124 +61,46 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 	} else { // Frozen mesh
 		// Add every region the line overlaps to the stack.
 		var mesh_stack = mesh[PNCMeshData.STACK]
+		var width = ds_grid_width(mesh_grid)
+		var height = ds_grid_height(mesh_grid)
 		var x_offset = mesh[PNCMeshData.X_OFFSET]
 		var y_offset = mesh[PNCMeshData.Y_OFFSET]
-		
+
 		// Line coordinates in grid
-		var lx1 = round((x1 - x_offset) / PNC_CELL_SIZE)
-		var ly1 = round((y1 - y_offset) / PNC_CELL_SIZE)
-		var lx2 = round((x2 - x_offset) / PNC_CELL_SIZE)
-		var ly2 = round((y2 - y_offset) / PNC_CELL_SIZE)
+		var lx1 = floor((x1 - x_offset) / PNC_CELL_SIZE)
+		var ly1 = floor((y1 - y_offset) / PNC_CELL_SIZE)
+		var lx2 = floor((x2 - x_offset) / PNC_CELL_SIZE)
+		var ly2 = floor((y2 - y_offset) / PNC_CELL_SIZE)
 		
-		// Line step
-		var x_step
-		var y_step
-		// Error margins
-		var error
-		var error_previous
-		// Line coordinate iteration
+		// Distance between (lx1, ly1) and (lx2, ly2)
+		var dx = abs(lx2 - lx1)
+		var dy = abs(ly2 - ly1)
+		// Current position
 		var xx = lx1
 		var yy = ly1
-		// Distance
-		var dx = lx2 - lx1
-		var dy = ly2 - ly1
-		// Double values of distance
-		var ddx
-		var ddy
+		// Iteration
+		var x_step = lx2 > lx1 ? 1 : -1
+		var y_step = ly2 > ly1 ? 1 : -1
+		var error = dx - dy
 		
-		// Push the first overlapping cell to the stack
-		function __cell(stack, grid, x, y) {
-			if x >= 0 and x < ds_grid_width(grid) and y >= 0 and y < ds_grid_height(grid) {
-				var cell = grid[# x, y]
+		dx *= 2
+		dy *= 2
+		
+		repeat 1 + dx + dy {
+			if xx >= 0 and xx < width and yy >= 0 and yy < height {
+				var cell = mesh_grid[# xx, yy]
 
 				if cell != -1 {
-					ds_stack_push(stack, cell)
+					ds_stack_push(mesh_stack, cell)
 				}
 			}
-		}
-
-		__cell(mesh_stack, mesh_grid, lx1, ly1)
-
-		/* The last point can't be here because of its previous point, which has to
-		   be verified. */
-		if dy < 0 {
-			y_step = -1
-			dy = -dy
-		} else {
-			y_step = 1
-		}
-
-		if dx < 0 {
-			x_step = -1
-			dx = -dx
-		} else {
-			x_step = 1
-		}
-
-		ddx = 2 * dx
-		ddy = 2 * dy
-
-		if ddx >= ddy { // First octant (0 <= slope <= 1)
-			/* Compulsory initialization
-			   (even for error_previous, needed when dx == dy) */
-			error = dx
-			error_previous = dx
-
-			repeat dx { // Do not use the first point (already done).
-				xx += x_step
-				error += ddy
-
-				if error > ddx { // Increment y if AFTER the middle (>).
-					yy += y_step
-					error -= ddx
-					
-					var error_sum = error + error_previous
-
-					// Three cases (octant == right -> right-top for directions below)
-					if error_sum < ddx { // Bottom cell also
-						__cell(mesh_stack, mesh_grid, xx, yy - y_step)
-					} else {
-						if error_sum > ddx { // Left cell also
-							__cell(mesh_stack, mesh_grid, xx - x_step, yy)
-						} else {
-							// Corner: Bottom and left cells also
-							__cell(mesh_stack, mesh_grid, xx, yy - y_step)
-							__cell(mesh_stack, mesh_grid, xx - y_step, yy)
-						}
-					}
-				}
-
-				__cell(mesh_stack, mesh_grid, xx, yy)
-				error_previous = error
-			}
-		} else { // The same as above.
-			error = dy
-			error_previous = dy
 			
-			repeat dy {
+			if error > 0 {
+				xx += x_step
+				error -= dy
+			} else {
 				yy += y_step
-				error += ddx
-				
-				if error > ddy {
-					xx += x_step
-					error -= ddy
-					
-					var error_sum = error + error_previous
-					
-					if error_sum < ddy {
-						__cell(mesh_stack, mesh_grid, xx - x_step, yy)
-					} else {
-						if error_sum > ddy {
-							__cell(mesh_stack, mesh_grid, xx, yy - y_step)
-						} else {
-							__cell(mesh_stack, mesh_grid, xx - x_step, yy)
-							__cell(mesh_stack, mesh_grid, xx, yy - y_step)
-						}
-					}
-				}
-				
-				__cell(mesh_stack, mesh_grid, xx, yy)
-				error_previous = error
+				error += dx
 			}
 		}
 
