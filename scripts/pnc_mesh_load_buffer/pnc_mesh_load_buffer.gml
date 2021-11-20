@@ -18,6 +18,8 @@ function pnc_mesh_load_buffer(buffer) {
 		repeat 12 {
 			triangle[@ i++] = buffer_read(buffer, buffer_f32)
 		}
+		
+		array_push(mesh_triangles, triangle)
 	}
 	
 	// Read frozen collision mesh stuff

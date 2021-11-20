@@ -44,7 +44,7 @@ function pnc_mesh_save_buffer(mesh, buffer) {
 			buffer_write(buffer, buffer_u32, triangles)
 		
 			repeat triangles {
-				buffer_write(buffer, buffer_u32, region[i++])
+				buffer_write(buffer, buffer_u32, region[j++])
 			}
 		}
 	
