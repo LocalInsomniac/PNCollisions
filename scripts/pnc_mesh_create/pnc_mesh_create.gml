@@ -4,9 +4,10 @@ function pnc_mesh_create() {
 		[], // triangles
 		undefined, // regions
 		undefined, // grid
-		0, // x offset
-		0, // y offset
+		undefined, // x offset
+		undefined, // y offset
 		undefined, // matrix
 		undefined, // inverse matrix
+		undefined, // stack
 	]
 }
