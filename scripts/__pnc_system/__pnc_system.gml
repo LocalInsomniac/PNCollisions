@@ -1,4 +1,4 @@
-#macro __PNC_VERSION "1.0.0"
+#macro __PNC_VERSION "1.1.0"
 #macro __PNC_DATE "2021-11-20"
 
 enum PNCMeshData {
