@@ -6,6 +6,7 @@ enum PNCMeshData {
 	Y_OFFSET,
 	MATRIX,
 	INVERSE_MATRIX,
+	STACK,
 }
 
 /// @desc Generate normals from a 3D triangle. Return an array ([nx, ny, nz]).

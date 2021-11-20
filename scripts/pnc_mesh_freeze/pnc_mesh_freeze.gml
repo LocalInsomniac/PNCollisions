@@ -108,6 +108,7 @@ function pnc_mesh_freeze(mesh) {
 	mesh[@ PNCMeshData.GRID] = mesh_grid
 	mesh[@ PNCMeshData.X_OFFSET] = x1
 	mesh[@ PNCMeshData.Y_OFFSET] = y1
+	mesh[@ PNCMeshData.STACK] = ds_stack_create()
 	
 	return true
 }

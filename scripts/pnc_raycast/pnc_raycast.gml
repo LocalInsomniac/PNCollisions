@@ -60,7 +60,7 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 		}
 	} else { // Frozen mesh
 		// Add every region the line overlaps to the stack.
-		var stack = ds_stack_create()
+		var mesh_stack = mesh[PNCMeshData.STACK]
 		var x_offset = mesh[PNCMeshData.X_OFFSET]
 		var y_offset = mesh[PNCMeshData.Y_OFFSET]
 		
@@ -97,7 +97,7 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 			}
 		}
 
-		__cell(stack, mesh_grid, lx1, ly1)
+		__cell(mesh_stack, mesh_grid, lx1, ly1)
 
 		/* The last point can't be here because of its previous point, which has to
 		   be verified. */
@@ -136,19 +136,19 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 
 					// Three cases (octant == right -> right-top for directions below)
 					if error_sum < ddx { // Bottom cell also
-						__cell(stack, mesh_grid, xx, yy - y_step)
+						__cell(mesh_stack, mesh_grid, xx, yy - y_step)
 					} else {
 						if error_sum > ddx { // Left cell also
-							__cell(stack, mesh_grid, xx - x_step, yy)
+							__cell(mesh_stack, mesh_grid, xx - x_step, yy)
 						} else {
 							// Corner: Bottom and left cells also
-							__cell(stack, mesh_grid, xx, yy - y_step)
-							__cell(stack, mesh_grid, xx - y_step, yy)
+							__cell(mesh_stack, mesh_grid, xx, yy - y_step)
+							__cell(mesh_stack, mesh_grid, xx - y_step, yy)
 						}
 					}
 				}
 
-				__cell(stack, mesh_grid, xx, yy)
+				__cell(mesh_stack, mesh_grid, xx, yy)
 				error_previous = error
 			}
 		} else { // The same as above.
@@ -166,18 +166,18 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 					var error_sum = error + error_previous
 					
 					if error_sum < ddy {
-						__cell(stack, mesh_grid, xx - x_step, yy)
+						__cell(mesh_stack, mesh_grid, xx - x_step, yy)
 					} else {
 						if error_sum > ddy {
-							__cell(stack, mesh_grid, xx, yy - y_step)
+							__cell(mesh_stack, mesh_grid, xx, yy - y_step)
 						} else {
-							__cell(stack, mesh_grid, xx - x_step, yy)
-							__cell(stack, mesh_grid, xx, yy - y_step)
+							__cell(mesh_stack, mesh_grid, xx - x_step, yy)
+							__cell(mesh_stack, mesh_grid, xx, yy - y_step)
 						}
 					}
 				}
 				
-				__cell(stack, mesh_grid, xx, yy)
+				__cell(mesh_stack, mesh_grid, xx, yy)
 				error_previous = error
 			}
 		}
@@ -185,8 +185,8 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 		// Check for intersections in every region the ray overlaps.
 		var mesh_regions = mesh[PNCMeshData.REGIONS]
 
-		repeat ds_stack_size(stack) {
-			var region = mesh_regions[ds_stack_pop(stack)]
+		repeat ds_stack_size(mesh_stack) {
+			var region = mesh_regions[ds_stack_pop(mesh_stack)]
 			var i = 0
 			
 			repeat array_length(region) {
@@ -204,13 +204,11 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 				}
 			}
 		}
-
-		ds_stack_destroy(stack)
 	}
 
 	if intersected {
 		if apply_matrix {
-			// The mesh has a matrix, so correct the raycast information.
+			// The mesh has a matrix transformation, so correct the raycast information.
 			var mesh_matrix = mesh[PNCMeshData.MATRIX]
 			var real_point = __pnc_vertex_transform_matrix(x2, y2, z2, mesh_matrix)
 			
