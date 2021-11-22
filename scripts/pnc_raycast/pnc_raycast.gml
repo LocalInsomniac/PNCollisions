@@ -45,18 +45,84 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 		var i = 0
 		
 		repeat array_length(mesh_triangles) {
-			var intersect = __pnc_line_overlaps_triangle([x1, y1, z1, x2, y2, z2], mesh_triangles[i++])
+			// Check this triangle for an intersection.
+			var triangle = mesh_triangles[i++]
 
-			if intersect != false {
-				// There is an intersection, apply it for further iterations.
-				intersected = true
-				x2 = intersect[0]
-				y2 = intersect[1]
-				z2 = intersect[2]
-				nx = intersect[3]
-				ny = intersect[4]
-				nz = intersect[5]
+			var tnx = triangle[9]
+			var tny = triangle[10]
+			var tnz = triangle[11]
+
+			// Find the intersection between the ray and the triangle's plane.
+			var dot = dot_product_3d(tnx, tny, tnz, x2 - x1, y2 - y1, z2 - z1)
+
+			if dot == 0 {
+				continue
 			}
+
+			var tx1 = triangle[0]
+			var ty1 = triangle[1]
+			var tz1 = triangle[2]
+
+			dot = dot_product_3d(tnx, tny, tnz, tx1 - x1, ty1 - y1, tz1 - z1) / dot
+
+			if dot < 0 or dot > 1 {
+				continue
+			}
+
+			var intersect_x = lerp(x1, x2, dot)
+			var intersect_y = lerp(y1, y2, dot)
+			var intersect_z = lerp(z1, z2, dot)
+
+			// Check if the intersection is inside the triangle.
+			var tx2 = triangle[3]
+			var ty2 = triangle[4]
+			var tz2 = triangle[5]
+
+			var ax = intersect_x - tx1
+			var ay = intersect_y - ty1
+			var az = intersect_z - tz1
+			var bx = tx2 - tx1
+			var by = ty2 - ty1
+			var bz = tz2 - tz1
+
+			if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
+				continue
+			}
+
+			var tx3 = triangle[6]
+			var ty3 = triangle[7]
+			var tz3 = triangle[8]
+
+			ax = intersect_x - tx2
+			ay = intersect_y - ty2
+			az = intersect_z - tz2
+			bx = tx3 - tx2
+			by = ty3 - ty2
+			bz = tz3 - tz2
+
+			if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
+				continue
+			}
+
+			ax = intersect_x - tx3
+			ay = intersect_y - ty3
+			az = intersect_z - tz3
+			bx = tx1 - tx3
+			by = ty1 - ty3
+			bz = tz1 - tz3
+
+			if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
+				continue
+			}
+
+			// There is an intersection, apply it for further iterations.
+			intersected = true
+			x2 = intersect_x
+			y2 = intersect_y
+			z2 = intersect_z
+			nx = tnx
+			ny = tny
+			nz = tnz
 		}
 	} else { // Frozen mesh
 		// Add every region the line overlaps to the stack.
@@ -112,18 +178,84 @@ function pnc_raycast(mesh, x1, y1, z1, x2, y2, z2) {
 			var i = 0
 			
 			repeat array_length(region) {
-				var intersect = __pnc_line_overlaps_triangle([x1, y1, z1, x2, y2, z2], mesh_triangles[region[i++]])
+				// Check this triangle for an intersection.
+				var triangle = mesh_triangles[region[i++]]
+	
+				var tnx = triangle[9]
+				var tny = triangle[10]
+				var tnz = triangle[11]
+	
+				// Find the intersection between the ray and the triangle's plane.
+				var dot = dot_product_3d(tnx, tny, tnz, x2 - x1, y2 - y1, z2 - z1)
 
-				if intersect != false {
-					// There is an intersection, apply it for further iterations.
-					intersected = true
-					x2 = intersect[0]
-					y2 = intersect[1]
-					z2 = intersect[2]
-					nx = intersect[3]
-					ny = intersect[4]
-					nz = intersect[5]
+				if dot == 0 {
+					continue
 				}
+	
+				var tx1 = triangle[0]
+				var ty1 = triangle[1]
+				var tz1 = triangle[2]
+
+				dot = dot_product_3d(tnx, tny, tnz, tx1 - x1, ty1 - y1, tz1 - z1) / dot
+
+				if dot < 0 or dot > 1 {
+					continue
+				}
+
+				var intersect_x = lerp(x1, x2, dot)
+				var intersect_y = lerp(y1, y2, dot)
+				var intersect_z = lerp(z1, z2, dot)
+
+				// Check if the intersection is inside the triangle.
+				var tx2 = triangle[3]
+				var ty2 = triangle[4]
+				var tz2 = triangle[5]
+	
+				var ax = intersect_x - tx1
+				var ay = intersect_y - ty1
+				var az = intersect_z - tz1
+				var bx = tx2 - tx1
+				var by = ty2 - ty1
+				var bz = tz2 - tz1
+
+				if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
+					continue
+				}
+
+				var tx3 = triangle[6]
+				var ty3 = triangle[7]
+				var tz3 = triangle[8]
+
+				ax = intersect_x - tx2
+				ay = intersect_y - ty2
+				az = intersect_z - tz2
+				bx = tx3 - tx2
+				by = ty3 - ty2
+				bz = tz3 - tz2
+
+				if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
+					continue
+				}
+
+				ax = intersect_x - tx3
+				ay = intersect_y - ty3
+				az = intersect_z - tz3
+				bx = tx1 - tx3
+				by = ty1 - ty3
+				bz = tz1 - tz3
+
+				if dot_product_3d(tnx, tny, tnz, az * by - ay * bz, ax * bz - az * bx, ay * bx - ax * by) < 0 {
+					continue
+				}
+	
+				// There is an intersection, apply it for further iterations.
+				intersected = true
+				x2 = intersect_x
+				y2 = intersect_y
+				z2 = intersect_z
+				nx = tnx
+				ny = tny
+				nz = tnz
 			}
 		}
 	}
